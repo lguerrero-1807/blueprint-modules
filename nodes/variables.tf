@@ -25,7 +25,22 @@ variable "auto_scale_options" {
   }
 }
 
-variable "auto_scale_cpu" {}
+variable "auto_scale_cpu" {
+  type = map(number)
+  default = {
+    scale_up_cooldown     = 300
+    scale_up_add          = 1
+    scale_up_evaluation   = 1
+    scale_up_period       = 300
+    scale_up_threshold    = 60
+    scale_down_cooldown   = 300
+    scale_down_remove     = -1
+    scale_down_evaluation = 1
+    scale_down_period     = 300
+    scale_down_threshold  = 40
+  }
+}
+
 
 
 

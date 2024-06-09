@@ -1,5 +1,5 @@
 resource "aws_eip" "vpc_iep" {
-  vpc = true
+  domain = true
   tags = {
     Name = format("%s-eip", var.cluster_name)
   }

@@ -16,7 +16,14 @@ variable "eks_cluster_sg" {}
 
 variable "nodes_instances_sizes" {}
 
-variable "auto_scale_options" {}
+variable "auto_scale_options" {
+  type = map(number)
+  default = {
+    desired = 1
+    min     = 1
+    max     = 3
+  }
+}
 
 variable "auto_scale_cpu" {}
 

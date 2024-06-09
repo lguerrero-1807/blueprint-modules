@@ -1,6 +1,6 @@
 resource "aws_eks_node_group" "cluster" {
   
-    cluster_name = var.eks_cluster.name
+    cluster_name = var.eks_cluster
     node_group_name = format("%s-node-group", var.cluster_name)
     node_role_arn = aws_iam_role.eks_nodes_roles.arn
 

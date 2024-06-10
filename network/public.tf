@@ -1,4 +1,4 @@
-resource "aws_subnet" "public_subnet_1a" {
+/*resource "aws_subnet" "public_subnet_1a" {
   vpc_id = aws_vpc.cluster_vpc.id
 
   cidr_block                = "10.0.0.0/20"
@@ -23,13 +23,25 @@ resource "aws_subnet" "public_subnet_1c" {
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }
+ */
 
-resource "aws_route_table_association" "public_1a" {
-  subnet_id = aws_subnet.public_subnet_1a.id
-  route_table_id = aws_route_table.igw_route_table.id
+resource "aws_subnet" "public_subnet" {
+  count = length(var.public_subnet_cidr_blocks)
+
+  vpc_id = aws_vpc.cluster_vpc.id
+  cidr_block = var.public_subnet_cidr_blocks[count.index]
+
+  availability_zone = var.availability_zones[count.index]
+
+  tags = {
+    Name = format("%s-public-%s", var.cluster_name, substr(var.availability_zones[count.index], -1))
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
+  }
 }
 
-resource "aws_route_table_association" "public_1c" {
-  subnet_id = aws_subnet.public_subnet_1c.id
-  route_table_id = aws_route_table.igw_route_table.id
+resource "aws_route_table_association" "private" {
+  count = length(var.private_subnet_cidr_blocks)
+
+  subnet_id      = aws_subnet.private_subnet[count.index].id
+  route_table_id = aws_route_table.nat.id
 }

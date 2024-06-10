@@ -25,7 +25,9 @@ resource "aws_route_table" "nat" {
 }
 
 resource "aws_route" "nat_access" {
-  route_table_id = aws_route_table.nat.id
+  count = length(var.public_subnet_cidr_blocks)
+
+  route_table_id         = aws_route_table.nat.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id = aws_nat_gateway.nat.id
+  nat_gateway_id         = aws_nat_gateway.nat[count.index].id
 }

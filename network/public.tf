@@ -39,9 +39,9 @@ resource "aws_subnet" "public_subnet" {
   }
 }
 
-resource "aws_route_table_association" "private" {
-  count = length(var.private_subnet_cidr_blocks)
+resource "aws_route_table_association" "public" {
+  count = length(var.public_subnet_cidr_blocks)
 
-  subnet_id      = aws_subnet.private_subnet[count.index].id
+  subnet_id      = aws_subnet.public_subnet[count.index].id
   route_table_id = aws_route_table.nat.id
 }

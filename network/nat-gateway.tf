@@ -5,16 +5,13 @@ resource "aws_eip" "vpc_iep" {
 }
 
 resource "aws_nat_gateway" "nat" {
-  count = length(var.public_subnet_cidr_blocks)
-
   allocation_id = aws_eip.vpc_iep.id
-  subnet_id     = aws_subnet.public_subnet[count.index].id
+  subnet_id     = aws_subnet.public_subnet[0].id
 
   tags = {
-    Name = format("%s-nat-gateway-%s", var.cluster_name, substr(var.availability_zones[count.index], -1, 1))
+    Name = format("%s-nat-gateway", var.cluster_name)
   }
 }
-
 
 resource "aws_route_table" "nat" {
   vpc_id = aws_vpc.cluster_vpc.id
@@ -25,9 +22,7 @@ resource "aws_route_table" "nat" {
 }
 
 resource "aws_route" "nat_access" {
-  count = length(var.public_subnet_cidr_blocks)
-
   route_table_id         = aws_route_table.nat.id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.nat[count.index].id
+  nat_gateway_id         = aws_nat_gateway.nat.id
 }

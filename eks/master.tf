@@ -10,10 +10,7 @@ resource "aws_eks_cluster" "eks_cluster" {
             aws_security_group.cluster_master_sg.id
         ]
 
-        subnet_ids = [
-            var.private_subnet_1a.id,
-            var.private_subnet_1c.id
-        ]
+        subnet_ids = data.aws_subnets.private_subnets.ids
 
     }
 

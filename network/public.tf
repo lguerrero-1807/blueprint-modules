@@ -34,7 +34,7 @@ resource "aws_subnet" "public_subnet" {
   availability_zone = var.availability_zones[count.index]
 
   tags = {
-    Name = format("%s-public-%s", var.cluster_name, substr(var.availability_zones[count.index], -1))
+    Name = format("%s-public-%s", var.cluster_name, substr(var.availability_zones[count.index], length(var.availability_zones[count.index]) - 1, 1))
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }

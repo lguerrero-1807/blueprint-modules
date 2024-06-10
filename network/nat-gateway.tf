@@ -11,7 +11,7 @@ resource "aws_nat_gateway" "nat" {
   subnet_id     = aws_subnet.public_subnet[count.index].id
 
   tags = {
-    Name = format("%s-nat-gateway-%s", var.cluster_name, substr(var.availability_zones[count.index], -1))
+    Name = format("%s-nat-gateway-%s", var.cluster_name, substr(var.availability_zones[count.index], -1, 1))
   }
 }
 

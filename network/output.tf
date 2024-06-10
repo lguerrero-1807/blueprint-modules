@@ -17,3 +17,7 @@ output "public_subnet_1a" {
 output "public_subnet_1c" {
   value = aws_subnet.public_subnet_1c
 }
+
+output "vpc_id" {
+  value       = aws_vpc.cluster_vpc.id
+}
